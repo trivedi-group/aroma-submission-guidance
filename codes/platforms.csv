@@ -1,0 +1,10 @@
+code,display,name,source
+GCQTOF,GC-QToF-MS,Gas chromatography quadrupole time-of-flight mass spectrometry,Figure 1
+TDQQQ,TD-GC-MS/MS,Thermal desorption GC triple quadrupole mass spectrometry,Figure 1
+TDGCMS,TD-GC-MS,Thermal desorption gas chromatography mass spectrometry,Figure 1
+GCMS,GC-MS,Gas chromatography mass spectrometry,Figure 1
+TDGCO,TD-GC-O,Thermal desorption GC with olfactometry port,Proposal text
+IMMS,IM-MS,Ion mobility mass spectrometry,Proposal text
+DESI,DESI-MS,Desorption electrospray ionisation mass spectrometry,Proposal text
+CITOF,CI-TOF-MS,Chemical ionisation time-of-flight mass spectrometry,Proposal text
+PTRMS,PTR-MS,Proton transfer reaction mass spectrometry,Proposal text
