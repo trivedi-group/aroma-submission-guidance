@@ -1,0 +1,16 @@
+sample_id,aliquot,sample_type,matrix_code,parent_std_id,holding_lab,collection_datetime,collection_device,sorbent,volume_ml,flow_ml_min,temperature_c,rel_humidity_pct,storage_duration_h,transport_conditions
+STD0000001,A3,STD,neat,,LU,,,,,,,,,
+STD0000002,A3,STD,neat,,LU,,,,,,,,,
+STD0000003,A3,STD,neat,,LU,,,,,,,,,
+STD0000004,A3,STD,neat,,LU,,,,,,,,,
+STD0000005,A3,STD,neat,,LU,,,,,,,,,
+STD0000006,A3,STD,neat,,LU,,,,,,,,,
+STD0000007,A3,STD,neat,,LU,,,,,,,,,
+SPK0200001,A3,SPK,breath,STD0000001,LU,2027-02-01T09:00:00+00:00,pump,Tenax,1000,100,21,40,2,ice
+SPK0200002,A3,SPK,breath,STD0000002,LU,2027-02-01T09:00:00+00:00,pump,Tenax,1000,100,21,40,2,ice
+SPK0200003,A3,SPK,breath,STD0000003,LU,2027-02-01T09:00:00+00:00,pump,Tenax,1000,100,21,40,2,ice
+SPK0200004,A3,SPK,breath,STD0000004,LU,2027-02-01T09:00:00+00:00,pump,Tenax,1000,100,21,40,2,ice
+SPK0200005,A3,SPK,breath,STD0000005,LU,2027-02-01T09:00:00+00:00,pump,Tenax,1000,100,21,40,2,ice
+SPK0200006,A3,SPK,breath,STD0000006,LU,2027-02-01T09:00:00+00:00,pump,Tenax,1000,100,21,40,2,ice
+SPK0200007,A3,SPK,breath,STD0000007,LU,2027-02-01T09:00:00+00:00,pump,Tenax,1000,100,21,40,2,ice
+BLK0200001,A3,BLK,breath,,LU,2027-02-01T09:00:00+00:00,pump,Tenax,1000,100,21,40,2,ice
