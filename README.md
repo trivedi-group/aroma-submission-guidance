@@ -13,10 +13,12 @@ Version 0.2. Applies to UoM, EES, LU, UoR and WYT.
 
 Complete steps 1 to 5 for every batch (Figure 1).
 
+<div>&nbsp;</div>
+
 <p><img src="images/01-workflow.png" alt="Figure 1. Workflow for each batch."><br>
 <b>Figure 1.</b> Workflow for each batch.</p>
 
-<p>&nbsp;</p>
+<div>&nbsp;</div>
 
 ### Step 1. Fill in the workbook
 
@@ -27,35 +29,39 @@ Complete steps 1 to 5 for every batch (Figure 1).
 5. Enter one row in calibration_points for each compound in each run.
 6. Select codes from the drop-down lists. Cells with a list accept only allowed codes.
 
+<div>&nbsp;</div>
+
 <p><img src="images/02-sheet-links.png" alt="Figure 2. Links between sheets. Each sheet points to the one before it by identifier."><br>
 <b>Figure 2.</b> Links between sheets. Each sheet points to the one before it by identifier.</p>
 
-<p>&nbsp;</p>
+<div>&nbsp;</div>
 
 <p><img src="images/03-sample-manifest.png" alt="Figure 3. sample_manifest. The sample_id identifies the tube. A spiked sample (SPK) names its source standard in parent_std_id."><br>
 <b>Figure 3.</b> sample_manifest. The sample_id identifies the tube. A spiked sample (SPK) names its source standard in parent_std_id.</p>
 
-<p>&nbsp;</p>
+<div>&nbsp;</div>
 
 <p><img src="images/04-run-manifest.png" alt="Figure 4. run_manifest. The run_id equals the raw file name without its extension."><br>
 <b>Figure 4.</b> run_manifest. The run_id equals the raw file name without its extension.</p>
 
-<p>&nbsp;</p>
+<div>&nbsp;</div>
 
 <p><img src="images/05-responses.png" alt="Figure 5. calibration_points. The response is the value from the laboratory's own software. use_for_lod marks the low points used for the detection limit. in_range marks the points inside the linear range."><br>
 <b>Figure 5.</b> calibration_points. The response is the value from the laboratory's own software. use_for_lod marks the low points used for the detection limit. in_range marks the points inside the linear range.</p>
 
-<p>&nbsp;</p>
+<div>&nbsp;</div>
 
 ### Step 2. Name the raw files
 
 1. Name each file as shown in Figure 6.
 2. Zip each vendor folder into one file with the same name stem.
 
+<div>&nbsp;</div>
+
 <p><img src="images/06-file-name.png" alt="Figure 6. Raw file name. Example: LU_TDGCMS_20270209_SMP0000123-A1_R01_0042.raw"><br>
 <b>Figure 6.</b> Raw file name. Example: LU_TDGCMS_20270209_SMP0000123-A1_R01_0042.raw</p>
 
-<p>&nbsp;</p>
+<div>&nbsp;</div>
 
 <table>
 <caption><b>Table 1.</b> Sample ID prefixes.</caption>
@@ -71,7 +77,7 @@ Complete steps 1 to 5 for every batch (Figure 1).
 </tbody>
 </table>
 
-<p>&nbsp;</p>
+<div>&nbsp;</div>
 
 <table>
 <caption><b>Table 2.</b> Blocks for SPK, BLK, QCP and SMP numbers.</caption>
@@ -87,7 +93,7 @@ Complete steps 1 to 5 for every batch (Figure 1).
 </tbody>
 </table>
 
-<p>&nbsp;</p>
+<div>&nbsp;</div>
 
 ### Step 3. Convert to mzML
 
@@ -108,10 +114,10 @@ Complete steps 1 to 5 for every batch (Figure 1).
 
 AROMA loads all submissions into one database, derives the detection limits and other values in the same way for every laboratory, and updates the OlfactoCards.
 
+<div>&nbsp;</div>
+
 <p><img src="images/07-card.png" alt="Figure 7. OlfactoCard built from the synthetic demonstration data."><br>
 <b>Figure 7.</b> OlfactoCard built from the synthetic demonstration data.</p>
-
-<p>&nbsp;</p>
 
 ## Rules
 
