@@ -1,0 +1,896 @@
+{
+  "version": "0.1.0",
+  "notes": "Single source of truth for every table a laboratory or UoM submits. The checker, the database builder, the CSV templates and the data dictionary are all generated from this file. Types: string, int, number, date (YYYY-MM-DD), datetime (ISO 8601 with offset), bool (Y or N).",
+  "tables": {
+    "standards": {
+      "where": "central",
+      "path": "registry/standards/standards.csv",
+      "description": "One row per standard preparation. Issued and owned by UoM.",
+      "key": [
+        "std_id"
+      ],
+      "columns": [
+        {
+          "name": "std_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^STD[0-9]{7}$",
+          "description": "Standard identifier issued by UoM."
+        },
+        {
+          "name": "prepared_date",
+          "type": "date",
+          "required": true,
+          "description": "Date of gravimetric preparation."
+        },
+        {
+          "name": "prep_batch",
+          "type": "string",
+          "required": true,
+          "description": "UoM preparation batch."
+        },
+        {
+          "name": "carrier",
+          "type": "string",
+          "required": true,
+          "description": "Solvent or carrier the standard is held in."
+        },
+        {
+          "name": "level_label",
+          "type": "string",
+          "required": false,
+          "description": "Free label for the concentration level."
+        }
+      ],
+      "optional": false
+    },
+    "standard_components": {
+      "where": "central",
+      "path": "registry/standards/standard_components.csv",
+      "description": "Which compounds are in each standard and at what concentration. One row per standard and compound, so mixtures of any size are held in the same table.",
+      "key": [
+        "std_id",
+        "aroma_id"
+      ],
+      "foreign_keys": [
+        {
+          "columns": [
+            "std_id"
+          ],
+          "ref_table": "standards",
+          "ref_columns": [
+            "std_id"
+          ]
+        },
+        {
+          "columns": [
+            "aroma_id"
+          ],
+          "ref_table": "compounds",
+          "ref_columns": [
+            "aroma_id"
+          ]
+        }
+      ],
+      "columns": [
+        {
+          "name": "std_id",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "aroma_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^AROMA-[0-9]{6,8}$"
+        },
+        {
+          "name": "conc_ng_per_ml",
+          "type": "number",
+          "required": true,
+          "min_exclusive": 0,
+          "description": "Certified concentration of the compound in the standard, ng per mL."
+        },
+        {
+          "name": "expanded_uncertainty_percent",
+          "type": "number",
+          "required": false,
+          "min": 0
+        },
+        {
+          "name": "coverage_factor",
+          "type": "number",
+          "required": false,
+          "min_exclusive": 0
+        },
+        {
+          "name": "purity_percent",
+          "type": "number",
+          "required": true,
+          "min": 0,
+          "max": 100
+        },
+        {
+          "name": "supplier",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "optional": false
+    },
+    "sample_manifest": {
+      "where": "lab",
+      "description": "One row per aliquot analysed by the laboratory. The mandatory collection fields are required for every sample type except standards.",
+      "key": [
+        "sample_id",
+        "aliquot"
+      ],
+      "foreign_keys": [
+        {
+          "columns": [
+            "parent_std_id"
+          ],
+          "ref_table": "standards",
+          "ref_columns": [
+            "std_id"
+          ]
+        }
+      ],
+      "columns": [
+        {
+          "name": "sample_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^(STD|SPK|BLK|QCP|SMP)[0-9]{7}$",
+          "description": "Prefix gives the sample type. STD is issued by UoM. SPK, BLK, QCP and SMP are issued by the laboratory from its own block in registry/id_blocks.csv."
+        },
+        {
+          "name": "aliquot",
+          "type": "string",
+          "required": true,
+          "pattern": "^A[0-9]{1,2}$",
+          "description": "Aliquot of the sample, for example A1. Unique across the consortium for a given sample."
+        },
+        {
+          "name": "sample_type",
+          "type": "string",
+          "required": true,
+          "vocab": "sample_types",
+          "description": "Must match the sample_id prefix."
+        },
+        {
+          "name": "matrix_code",
+          "type": "string",
+          "required": true,
+          "vocab": "matrices",
+          "description": "neat for standards."
+        },
+        {
+          "name": "parent_std_id",
+          "type": "string",
+          "required": false,
+          "required_if_type": [
+            "SPK"
+          ],
+          "pattern": "^STD[0-9]{7}$",
+          "description": "Standard used to spike the matrix."
+        },
+        {
+          "name": "holding_lab",
+          "type": "string",
+          "required": true,
+          "vocab": "labs",
+          "description": "Laboratory that analyses this aliquot."
+        },
+        {
+          "name": "collection_datetime",
+          "type": "datetime",
+          "required": true,
+          "required_unless_type": [
+            "STD"
+          ]
+        },
+        {
+          "name": "collection_device",
+          "type": "string",
+          "required": true,
+          "required_unless_type": [
+            "STD"
+          ]
+        },
+        {
+          "name": "sorbent",
+          "type": "string",
+          "required": true,
+          "required_unless_type": [
+            "STD"
+          ]
+        },
+        {
+          "name": "volume_ml",
+          "type": "number",
+          "required": true,
+          "required_unless_type": [
+            "STD"
+          ],
+          "min": 0
+        },
+        {
+          "name": "flow_ml_min",
+          "type": "number",
+          "required": true,
+          "required_unless_type": [
+            "STD"
+          ],
+          "min": 0
+        },
+        {
+          "name": "temperature_c",
+          "type": "number",
+          "required": true,
+          "required_unless_type": [
+            "STD"
+          ]
+        },
+        {
+          "name": "rel_humidity_pct",
+          "type": "number",
+          "required": true,
+          "required_unless_type": [
+            "STD"
+          ],
+          "min": 0,
+          "max": 100
+        },
+        {
+          "name": "storage_duration_h",
+          "type": "number",
+          "required": true,
+          "required_unless_type": [
+            "STD"
+          ],
+          "min": 0
+        },
+        {
+          "name": "transport_conditions",
+          "type": "string",
+          "required": true,
+          "required_unless_type": [
+            "STD"
+          ]
+        }
+      ],
+      "optional": false
+    },
+    "sample_attributes": {
+      "where": "lab",
+      "description": "Stream-specific fields in long format, so a new matrix needs a new vocabulary entry and not a new column.",
+      "key": [
+        "sample_id",
+        "aliquot",
+        "attribute"
+      ],
+      "foreign_keys": [
+        {
+          "columns": [
+            "sample_id",
+            "aliquot"
+          ],
+          "ref_table": "sample_manifest",
+          "ref_columns": [
+            "sample_id",
+            "aliquot"
+          ]
+        }
+      ],
+      "columns": [
+        {
+          "name": "sample_id",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "aliquot",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "attribute",
+          "type": "string",
+          "required": true,
+          "vocab": "stream_attributes"
+        },
+        {
+          "name": "value",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "optional": true
+    },
+    "run_manifest": {
+      "where": "lab",
+      "description": "One row per acquisition. The run_id is the file name without its extension and encodes lab, platform, date, sample, aliquot and run number.",
+      "key": [
+        "run_id"
+      ],
+      "foreign_keys": [
+        {
+          "columns": [
+            "sample_id",
+            "aliquot"
+          ],
+          "ref_table": "sample_manifest",
+          "ref_columns": [
+            "sample_id",
+            "aliquot"
+          ]
+        }
+      ],
+      "columns": [
+        {
+          "name": "run_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[A-Z][A-Z0-9]{1,5}_[A-Z0-9]{3,8}_[0-9]{8}_(STD|SPK|BLK|QCP|SMP)[0-9]{7}-A[0-9]{1,2}_R[0-9]{2}_[0-9]{4}$",
+          "description": "LAB_PLATFORM_YYYYMMDD_SAMPLEID-ALIQUOT_Rnn_RUNNO, the file name without its extension."
+        },
+        {
+          "name": "lab",
+          "type": "string",
+          "required": true,
+          "vocab": "labs"
+        },
+        {
+          "name": "platform",
+          "type": "string",
+          "required": true,
+          "vocab": "platforms"
+        },
+        {
+          "name": "run_date",
+          "type": "date",
+          "required": true
+        },
+        {
+          "name": "sample_id",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "aliquot",
+          "type": "string",
+          "required": true,
+          "pattern": "^A[0-9]{1,2}$"
+        },
+        {
+          "name": "run_no",
+          "type": "int",
+          "required": true,
+          "min": 1,
+          "max": 9999
+        },
+        {
+          "name": "replicate",
+          "type": "int",
+          "required": true,
+          "min": 1,
+          "max": 99
+        },
+        {
+          "name": "batch_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[0-9]{8}_B[0-9]{2}$"
+        },
+        {
+          "name": "run_type",
+          "type": "string",
+          "required": true,
+          "vocab": "run_types"
+        },
+        {
+          "name": "run_status",
+          "type": "string",
+          "required": true,
+          "vocab": "run_status"
+        },
+        {
+          "name": "status_note",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "injection_datetime",
+          "type": "datetime",
+          "required": true
+        },
+        {
+          "name": "instrument_id",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "method_id",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "sop_id",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "sop_version",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "delivered_volume_ul",
+          "type": "number",
+          "required": false,
+          "min": 0,
+          "description": "Volume of standard loaded, injected or spiked. Required for std and spiked runs."
+        },
+        {
+          "name": "processing_software",
+          "type": "string",
+          "required": true,
+          "description": "Software used to extract the compound responses, for example MassHunter, MS-DIAL, TargetLynx."
+        },
+        {
+          "name": "processing_version",
+          "type": "string",
+          "required": true,
+          "description": "Version of that software, and the processing method file name if there is one."
+        },
+        {
+          "name": "internal_standard",
+          "type": "string",
+          "required": false
+        }
+      ],
+      "optional": false
+    },
+    "file_manifest": {
+      "where": "lab",
+      "description": "One row per file, raw or exported. Raw vendor folders are archived as a single zip so that one checksum covers them.",
+      "key": [
+        "file_name"
+      ],
+      "foreign_keys": [
+        {
+          "columns": [
+            "run_id"
+          ],
+          "ref_table": "run_manifest",
+          "ref_columns": [
+            "run_id"
+          ]
+        }
+      ],
+      "columns": [
+        {
+          "name": "file_name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "run_id",
+          "type": "string",
+          "required": false,
+          "description": "Required for raw_vendor and mzml files."
+        },
+        {
+          "name": "kind",
+          "type": "string",
+          "required": true,
+          "vocab": "file_kinds_kind"
+        },
+        {
+          "name": "sha256",
+          "type": "string",
+          "required": true,
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        {
+          "name": "size_bytes",
+          "type": "int",
+          "required": true,
+          "min": 0
+        },
+        {
+          "name": "uri",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "converter_version",
+          "type": "string",
+          "required": false,
+          "description": "For example the msconvert version used to make an mzML file."
+        }
+      ],
+      "optional": false
+    },
+    "calibration_points": {
+      "where": "lab",
+      "description": "One response per run and compound. The amount is never typed by the laboratory. It is derived from the standard registry and the delivered volume in the run manifest.",
+      "key": [
+        "run_id",
+        "aroma_id"
+      ],
+      "foreign_keys": [
+        {
+          "columns": [
+            "run_id"
+          ],
+          "ref_table": "run_manifest",
+          "ref_columns": [
+            "run_id"
+          ]
+        },
+        {
+          "columns": [
+            "aroma_id"
+          ],
+          "ref_table": "compounds",
+          "ref_columns": [
+            "aroma_id"
+          ]
+        }
+      ],
+      "columns": [
+        {
+          "name": "run_id",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "aroma_id",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "response",
+          "type": "number",
+          "required": true
+        },
+        {
+          "name": "response_basis",
+          "type": "string",
+          "required": true,
+          "vocab": "response_basis"
+        },
+        {
+          "name": "quant_ion",
+          "type": "string",
+          "required": true,
+          "description": "Ion or transition quantified, for example 117.0578 or 118.065>91.054."
+        },
+        {
+          "name": "use_for_lod",
+          "type": "bool",
+          "required": true,
+          "description": "Point lies in the low range set by the SOP for LOD and LOQ."
+        },
+        {
+          "name": "in_range",
+          "type": "bool",
+          "required": true,
+          "description": "Point lies in the laboratory's reported linear range."
+        }
+      ],
+      "optional": true
+    },
+    "features": {
+      "where": "lab",
+      "description": "Harmonised feature table, one row per run and feature. Unassigned features are kept, with a blank aroma_id.",
+      "key": [
+        "run_id",
+        "feature_id"
+      ],
+      "foreign_keys": [
+        {
+          "columns": [
+            "run_id"
+          ],
+          "ref_table": "run_manifest",
+          "ref_columns": [
+            "run_id"
+          ]
+        },
+        {
+          "columns": [
+            "aroma_id"
+          ],
+          "ref_table": "compounds",
+          "ref_columns": [
+            "aroma_id"
+          ]
+        }
+      ],
+      "columns": [
+        {
+          "name": "run_id",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "feature_id",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "aroma_id",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "rt_min",
+          "type": "number",
+          "required": false,
+          "min": 0
+        },
+        {
+          "name": "mz",
+          "type": "number",
+          "required": true,
+          "min_exclusive": 0
+        },
+        {
+          "name": "adduct",
+          "type": "string",
+          "required": false,
+          "vocab": "adducts"
+        },
+        {
+          "name": "area",
+          "type": "number",
+          "required": false
+        },
+        {
+          "name": "area_is_ratio",
+          "type": "number",
+          "required": false
+        },
+        {
+          "name": "id_level",
+          "type": "string",
+          "required": false,
+          "vocab": "id_levels"
+        },
+        {
+          "name": "snr",
+          "type": "number",
+          "required": false
+        },
+        {
+          "name": "flags",
+          "type": "string",
+          "required": false,
+          "description": "Semicolon separated QC flags."
+        }
+      ],
+      "optional": true
+    },
+    "ccs_results": {
+      "where": "lab",
+      "description": "One row per laboratory, platform, compound, adduct, buffer gas and method. The expanded uncertainty states its coverage factor.",
+      "key": [
+        "lab",
+        "platform",
+        "aroma_id",
+        "adduct",
+        "buffer_gas",
+        "method"
+      ],
+      "foreign_keys": [
+        {
+          "columns": [
+            "aroma_id"
+          ],
+          "ref_table": "compounds",
+          "ref_columns": [
+            "aroma_id"
+          ]
+        }
+      ],
+      "columns": [
+        {
+          "name": "lab",
+          "type": "string",
+          "required": true,
+          "vocab": "labs"
+        },
+        {
+          "name": "platform",
+          "type": "string",
+          "required": true,
+          "vocab": "platforms"
+        },
+        {
+          "name": "aroma_id",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "adduct",
+          "type": "string",
+          "required": true,
+          "vocab": "adducts"
+        },
+        {
+          "name": "buffer_gas",
+          "type": "string",
+          "required": true,
+          "vocab": "buffer_gases"
+        },
+        {
+          "name": "method",
+          "type": "string",
+          "required": true,
+          "vocab": "ccs_methods"
+        },
+        {
+          "name": "calibrant",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "ccs_a2",
+          "type": "number",
+          "required": true,
+          "min_exclusive": 0
+        },
+        {
+          "name": "expanded_uncertainty_a2",
+          "type": "number",
+          "required": true,
+          "min": 0
+        },
+        {
+          "name": "coverage_factor",
+          "type": "number",
+          "required": true,
+          "min_exclusive": 0
+        },
+        {
+          "name": "n_replicates",
+          "type": "int",
+          "required": true,
+          "min": 1
+        },
+        {
+          "name": "confidence",
+          "type": "string",
+          "required": true,
+          "description": "Confidence statement. A controlled vocabulary is still to be agreed."
+        }
+      ],
+      "optional": true
+    },
+    "perception_summary": {
+      "where": "central",
+      "path": "registry/perception/perception_summary.csv",
+      "description": "Open-tier aggregates only, released by UoM after disclosure review. Session-level and assessor-level data stay in the controlled tier.",
+      "key": [
+        "aroma_id"
+      ],
+      "foreign_keys": [
+        {
+          "columns": [
+            "aroma_id"
+          ],
+          "ref_table": "compounds",
+          "ref_columns": [
+            "aroma_id"
+          ]
+        }
+      ],
+      "columns": [
+        {
+          "name": "aroma_id",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "detection_level",
+          "type": "number",
+          "required": false
+        },
+        {
+          "name": "quality_change_level",
+          "type": "number",
+          "required": false
+        },
+        {
+          "name": "gco_neat",
+          "type": "number",
+          "required": false
+        },
+        {
+          "name": "gco_in_matrix",
+          "type": "number",
+          "required": false
+        },
+        {
+          "name": "level_unit",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "intensity",
+          "type": "number",
+          "required": false
+        },
+        {
+          "name": "intensity_scale",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "descriptor",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "assessors_n",
+          "type": "int",
+          "required": true,
+          "min": 1
+        },
+        {
+          "name": "lexicon_version",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "disclosure_reviewed",
+          "type": "bool",
+          "required": true,
+          "description": "Must be Y before a row can enter the open tier."
+        }
+      ],
+      "optional": false
+    },
+    "release_status": {
+      "where": "central",
+      "path": "registry/release_status.csv",
+      "description": "Set by reviewers once a card passes QC or is released.",
+      "key": [
+        "aroma_id"
+      ],
+      "foreign_keys": [
+        {
+          "columns": [
+            "aroma_id"
+          ],
+          "ref_table": "compounds",
+          "ref_columns": [
+            "aroma_id"
+          ]
+        }
+      ],
+      "columns": [
+        {
+          "name": "aroma_id",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "status",
+          "type": "string",
+          "required": true,
+          "vocab": "release_status"
+        },
+        {
+          "name": "release_id",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "optional": false
+    }
+  }
+}

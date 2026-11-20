@@ -1,0 +1,12 @@
+code,stream
+time_since_last_meal_h,breath
+oral_hygiene,breath
+smoking_status,breath
+skin_site,sebum
+swab_type,sebum
+time_since_washing_h,sebum
+imposed_activity,air
+ventilation_state,air
+product,food
+batch,food
+storage_day,food

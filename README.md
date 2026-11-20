@@ -7,10 +7,11 @@ Version 0.2. Applies to UoM, EES, LU, UoR and WYT.
 - [Blank workbook](https://github.com/trivedi-group/aroma-submission-guidance/raw/main/templates/Submission%20template%20v1.xlsx)
 - [Filled example workbook](https://github.com/trivedi-group/aroma-submission-guidance/raw/main/templates/Example%20filled%20workbook%20v1.xlsx). All values are synthetic.
 - [Blank CSV sheets](templates) and the [example as CSV](example/LU)
+- [Checker](checker) with instructions
 
 ## Procedure
 
-Complete steps 1 to 4 for every batch (Figure 1).
+Complete steps 1 to 5 for every batch (Figure 1).
 
 ![Figure 1](images/01-workflow.png)
 
@@ -75,10 +76,15 @@ Table 2. Blocks for SPK, BLK, QCP and SMP numbers.
 1. Convert a copy of each raw file to mzML with ProteoWizard msconvert.
 2. Enter the converter and its version in file_manifest.
 
-### Step 4. Send
+### Step 4. Check
 
-1. Send the filled workbook, the raw files with their SHA-256 checksums, and the mzML files.
-2. Correct every error that AROMA returns from the checker and resubmit.
+1. Run the [checker](checker) on the filled workbook.
+2. Correct every error and run the checker again until the last line is PASS.
+
+### Step 5. Submit
+
+1. Submit the filled workbook, the raw files with their SHA-256 checksums, and the mzML files.
+2. Upload location and method. To be confirmed by UoM.
 
 ### Output
 
@@ -132,7 +138,7 @@ Each laboratory processes its own raw data and reports one response per run and 
 
 ### Checks
 
-AROMA runs the checker on every submission. It tests every column, the links between sheets, the agreement between file names and the run_manifest, that an amount can be derived for every response, and that each sample ID lies in an allocated block. The laboratory corrects every error and resubmits.
+The checker tests every column, the links between sheets, the agreement between file names and the run_manifest, that an amount can be derived for every response, and that each sample ID lies in an allocated block. Correct every error before submitting.
 
 ### Retained records
 

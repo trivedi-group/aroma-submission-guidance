@@ -1,0 +1,6 @@
+code,issued_by,description
+STD,UOM,Standard preparation
+SPK,lab,Matrix spiked by the laboratory with a UoM standard
+BLK,lab,"Laboratory blank, made with the laboratory own matrix"
+QCP,lab,Pooled QC material
+SMP,lab,Real sample

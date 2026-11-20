@@ -1,0 +1,14 @@
+kind,extension
+raw_vendor,raw
+raw_vendor,d.zip
+raw_vendor,raw.zip
+raw_vendor,wiff
+raw_vendor,wiff.zip
+raw_vendor,qgd
+raw_vendor,lcd
+mzml,mzML
+mzml,mzML.gz
+feature_table,csv
+feature_table,parquet
+log,txt
+other,zip
