@@ -1,6 +1,56 @@
 # AROMA submission guidance
 
-Public guidance for laboratories contributing data to the Molecular Olfaction Commons (AROMA). Everything a laboratory needs to prepare a submission is on this page, so nothing has to be opened or downloaded to follow the steps. The only file to download is the workbook, Submission template v1.xlsx, which every laboratory fills in.
+Public guidance for laboratories contributing data to the Molecular Olfaction Commons (AROMA). This page is written to be followed from top to bottom. Each step has a picture and a file to start from, and nothing else needs to be opened.
+
+## Start here
+
+![Four steps for each batch](images/01-overview.png)
+
+### Step 1. Download a workbook to start from
+
+- [Blank workbook](https://github.com/trivedi-group/aroma-submission-guidance/raw/main/templates/Submission%20template%20v1.xlsx). Every laboratory uses this one workbook, so the data arrive in one format.
+- [Filled example workbook](https://github.com/trivedi-group/aroma-submission-guidance/raw/main/templates/Example%20filled%20workbook%20v1.xlsx). Open it next to the blank one to see what finished rows look like. Every value in it is synthetic.
+- Prefer CSV files? The [templates](templates) folder has one blank CSV per sheet, and [example/LU](example/LU) has the same example as CSV.
+
+### Step 2. Fill in the sheets
+
+The workbook has one sheet per kind of record. You link them with identifiers you write yourself, so nothing has to be looked up.
+
+![How the sheets link](images/04-sheet-links.png)
+
+Start with the tubes you analysed.
+
+![sample_manifest example](images/05-sample-manifest.png)
+
+Then list each injection.
+
+![run_manifest example](images/06-run-manifest.png)
+
+Last, add the number your own software gave for each compound in each run.
+
+![calibration_points example](images/07-responses.png)
+
+Allowed codes for laboratories, platforms, matrices and so on are in the workbook's Vocabularies sheet and in section 9 below. Cells with a drop-down list only accept an allowed code.
+
+### Step 3. Name your raw files
+
+![Raw file names](images/02-file-name.png)
+
+![Sample identifiers](images/03-identifiers.png)
+
+### Step 4. Make an mzML copy and send everything
+
+Convert a copy of each raw file to mzML with ProteoWizard msconvert, and write the converter version in the file_manifest sheet. Send the filled workbook, the raw files with their checksums, and the mzML copies. AROMA runs the same checker on every submission and sends back a list of anything to fix.
+
+### What happens to your data
+
+AROMA loads every laboratory's workbook into one database, works out the detection limits and other values in the same way for everyone, and updates the OlfactoCards.
+
+![An OlfactoCard from the synthetic demonstration](images/08-card.png)
+
+## Detailed rules
+
+The sections below give every rule in full. The steps above are enough to get started.
 
 Version 0.2, a proposal for the five laboratories in the sprint (UoM, EES, LU, UoR and WYT). The rules hold when the consortium grows to 25 laboratories and 50,000 compounds or more, so nothing here depends on the number of laboratories or compounds.
 
@@ -8,7 +58,7 @@ Version 0.2, a proposal for the five laboratories in the sprint (UoM, EES, LU, U
 
 For every batch, send three things.
 
-1. The filled workbook, Submission template v1.xlsx, in this repository. It is the only template. Every laboratory fills in the same sheets.
+1. The filled workbook, Submission template v1.xlsx, in the templates folder. It is the only template. Every laboratory fills in the same sheets.
 2. The raw files, named as in section 3, with a SHA-256 checksum for each listed in the workbook.
 3. The same data converted to the open format in section 4.
 
