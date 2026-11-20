@@ -1,126 +1,146 @@
-# AROMA submission guidance
+# AROMA data submission
 
-Public guidance for laboratories contributing data to the Molecular Olfaction Commons (AROMA). This page is written to be followed from top to bottom. Each step has a picture and a file to start from, and nothing else needs to be opened.
+Version 0.2. Applies to UoM, EES, LU, UoR and WYT.
 
-## Start here
+## Materials
 
-![Four steps for each batch](images/01-overview.png)
+- [Blank workbook](https://github.com/trivedi-group/aroma-submission-guidance/raw/main/templates/Submission%20template%20v1.xlsx)
+- [Filled example workbook](https://github.com/trivedi-group/aroma-submission-guidance/raw/main/templates/Example%20filled%20workbook%20v1.xlsx). All values are synthetic.
+- [Blank CSV sheets](templates) and the [example as CSV](example/LU)
 
-### Step 1. Download a workbook to start from
+## Procedure
 
-- [Blank workbook](https://github.com/trivedi-group/aroma-submission-guidance/raw/main/templates/Submission%20template%20v1.xlsx). Every laboratory uses this one workbook, so the data arrive in one format.
-- [Filled example workbook](https://github.com/trivedi-group/aroma-submission-guidance/raw/main/templates/Example%20filled%20workbook%20v1.xlsx). Open it next to the blank one to see what finished rows look like. Every value in it is synthetic.
-- Prefer CSV files? The [templates](templates) folder has one blank CSV per sheet, and [example/LU](example/LU) has the same example as CSV.
+Complete steps 1 to 4 for every batch (Figure 1).
 
-### Step 2. Fill in the sheets
+![Figure 1](images/01-workflow.png)
 
-The workbook has one sheet per kind of record. You link them with identifiers you write yourself, so nothing has to be looked up.
+Figure 1. Workflow for each batch.
 
-![How the sheets link](images/04-sheet-links.png)
+### Step 1. Fill in the workbook
 
-Start with the tubes you analysed.
+1. Open the blank workbook. Use the filled example as a guide.
+2. Enter one row in sample_manifest for each tube analysed.
+3. Enter one row in run_manifest for each injection.
+4. Enter one row in file_manifest for each file.
+5. Enter one row in calibration_points for each compound in each run.
+6. Select codes from the drop-down lists. Cells with a list accept only allowed codes.
 
-![sample_manifest example](images/05-sample-manifest.png)
+![Figure 2](images/02-sheet-links.png)
 
-Then list each injection.
+Figure 2. Links between sheets. Each sheet points to the one before it by identifier.
 
-![run_manifest example](images/06-run-manifest.png)
+![Figure 3](images/03-sample-manifest.png)
 
-Last, add the number your own software gave for each compound in each run.
+Figure 3. sample_manifest. The sample_id identifies the tube. A spiked sample (SPK) names its source standard in parent_std_id.
 
-![calibration_points example](images/07-responses.png)
+![Figure 4](images/04-run-manifest.png)
 
-Allowed codes for laboratories, platforms, matrices and so on are in the workbook's Vocabularies sheet and in section 9 below. Cells with a drop-down list only accept an allowed code.
+Figure 4. run_manifest. The run_id equals the raw file name without its extension.
 
-### Step 3. Name your raw files
+![Figure 5](images/05-responses.png)
 
-![Raw file names](images/02-file-name.png)
+Figure 5. calibration_points. The response is the value from the laboratory's own software. use_for_lod marks the low points used for the detection limit. in_range marks the points inside the linear range.
 
-![Sample identifiers](images/03-identifiers.png)
+### Step 2. Name the raw files
 
-### Step 4. Make an mzML copy and send everything
+1. Name each file as shown in Figure 6.
+2. Zip each vendor folder into one file with the same name stem.
 
-Convert a copy of each raw file to mzML with ProteoWizard msconvert, and write the converter version in the file_manifest sheet. Send the filled workbook, the raw files with their checksums, and the mzML copies. AROMA runs the same checker on every submission and sends back a list of anything to fix.
+![Figure 6](images/06-file-name.png)
 
-### What happens to your data
+Figure 6. Raw file name. Example: LU_TDGCMS_20270209_SMP0000123-A1_R01_0042.raw
 
-AROMA loads every laboratory's workbook into one database, works out the detection limits and other values in the same way for everyone, and updates the OlfactoCards.
+Table 1. Sample ID prefixes.
 
-![An OlfactoCard from the synthetic demonstration](images/08-card.png)
+| Prefix | Sample type | Issued by | Example |
+|---|---|---|---|
+| STD | Standard | UoM | STD0000003 |
+| SPK | Spiked sample | Laboratory, own block | SPK0200003 |
+| BLK | Blank | Laboratory, own block | BLK0200001 |
+| QCP | Pooled QC | Laboratory, own block | QCP0200001 |
+| SMP | Real sample | Laboratory, own block | SMP0200001 |
 
-## Detailed rules
+Table 2. Blocks for SPK, BLK, QCP and SMP numbers.
 
-The sections below give every rule in full. The steps above are enough to get started.
+| Laboratory | First | Last |
+|---|---|---|
+| UoM | 1 | 100000 |
+| EES | 100001 | 200000 |
+| LU | 200001 | 300000 |
+| UoR | 300001 | 400000 |
+| WYT | 400001 | 500000 |
 
-Version 0.2, a proposal for the five laboratories in the sprint (UoM, EES, LU, UoR and WYT). The rules hold when the consortium grows to 25 laboratories and 50,000 compounds or more, so nothing here depends on the number of laboratories or compounds.
+### Step 3. Convert to mzML
 
-## 1. What you send
+1. Convert a copy of each raw file to mzML with ProteoWizard msconvert.
+2. Enter the converter and its version in file_manifest.
 
-For every batch, send three things.
+### Step 4. Send
 
-1. The filled workbook, Submission template v1.xlsx, in the templates folder. It is the only template. Every laboratory fills in the same sheets.
-2. The raw files, named as in section 3, with a SHA-256 checksum for each listed in the workbook.
-3. The same data converted to the open format in section 4.
+1. Send the filled workbook, the raw files with their SHA-256 checksums, and the mzML files.
+2. Correct every error that AROMA returns from the checker and resubmit.
 
-The raw files are deposited in institutional storage and never go on GitHub. The workbook holds the metadata, the compound responses and the file list.
+### Output
 
-## 2. Identifiers
+AROMA loads all submissions into one database, derives the detection limits and other values in the same way for every laboratory, and updates the OlfactoCards.
 
-- Compounds: AROMA-NNNNNN, 6 to 8 digits. Issued by the registry, never by a laboratory.
-- Standards: STD followed by 7 digits. UoM issues all of them, because UoM prepares all standards.
-- Spiked samples, blanks, pooled QC and real samples: SPK, BLK, QCP and SMP followed by 7 digits. Each laboratory issues its own from its own block in registry/id_blocks.csv. Laboratories make their own matrices, their own blanks and their own spikes, using only the standards UoM supplies. Each spiked sample records the STD it was spiked from.
-- Aliquot: A followed by 1 or 2 digits, for example A1. An aliquot belongs to one laboratory, so the same tube split between two laboratories has two aliquot numbers.
-- Laboratory and platform codes are in the Vocabularies sheet. Codes use capital letters and digits and never an underscore.
+![Figure 7](images/07-card.png)
 
-## 3. Raw data file names
+Figure 7. OlfactoCard built from the synthetic demonstration data.
 
-    LAB_PLATFORM_YYYYMMDD_SAMPLEID-ALIQUOT_Rnn_RUNNO.ext
+## Rules
 
-Example: LU_TDGCMS_20270209_SMP0000123-A1_R01_0042.raw
+### Identifiers
 
-- The sample type is the ID prefix, so it is not repeated. Matrix and all other metadata live in the workbook, so a name cannot contradict it.
-- Rnn is the replicate. RUNNO has 4 digits and is unique within the laboratory and day.
-- Vendor folders (.d and .raw directories) are zipped into one file with the same stem, so that one checksum covers the run.
-- Names contain no spaces, because pipelines break on spaces.
-- A corrected file is a new version with a new run number. Never overwrite or rename a submitted file.
-- Keep batches in a folder named YYYYMMDD_Bnn.
+1. Use AROMA-NNNNNN for compounds, with 6 to 8 digits. The registry issues them. Laboratories never create them.
+2. Use STD followed by 7 digits for standards. UoM issues all of them.
+3. Use SPK, BLK, QCP and SMP followed by 7 digits for spiked samples, blanks, pooled QC and real samples. Issue them from the laboratory's own block (Table 2).
+4. Record the source standard of every spiked sample in parent_std_id.
+5. Use A followed by 1 or 2 digits for the aliquot, for example A1. Give each laboratory its own aliquot number for a tube.
+6. Write codes in capital letters and digits. Do not use underscores in codes.
 
-The authority is the run_manifest sheet, and the checker confirms that the file names and the sheet agree.
+### Raw file names
 
-## 4. Formats
+Use the pattern LAB_PLATFORM_YYYYMMDD_SAMPLEID-ALIQUOT_Rnn_RUNNO.ext (Figure 6).
 
-- Raw: the vendor-native file, unaltered, zipped per run.
-- Open copy: mzML, converted with ProteoWizard msconvert. Record the converter and its version in the file_manifest sheet. Whether the ion mobility dimension survives conversion differs by vendor, so each laboratory should test one file and report the result before the first batch.
-- Tables: the workbook, or UTF-8 CSV with the same headers for tables over about 50,000 rows. Decimal point, not comma.
-- Dates are YYYY-MM-DD. Date and time values are ISO 8601 with a UTC offset, typed as text.
-- Human-linked metadata and session-level perception data never go in the workbook. They stay in the controlled tier.
+1. Do not repeat the sample type. The sample ID prefix gives it.
+2. Write the replicate as Rnn and the run number with 4 digits. The run number is unique within the laboratory and day.
+3. Zip each vendor folder (.d or .raw directory) into one file with the same name stem.
+4. Do not use spaces.
+5. Save a corrected file as a new file with a new run number. Do not overwrite or rename a submitted file.
+6. Keep each batch in a folder named YYYYMMDD_Bnn.
+7. Make the run_id in the run_manifest sheet equal to the file name without its extension.
 
-## 5. Do laboratories deconvolve and send compound data?
+### Formats
 
-The database holds one response per run and compound, so someone has to turn raw data into compound responses. For the sprint, each laboratory does this with its own software and sends the result. This keeps the sprint moving, and it is the most practical route for standards, where the compound, retention window and quantifier ion are known, so targeted integration is enough.
+1. Raw data. Keep the vendor file unaltered, zipped per run.
+2. Open copy. Convert to mzML with ProteoWizard msconvert. Record the converter and its version in the file_manifest sheet. Convert one file and report whether the ion mobility dimension is kept before the first batch.
+3. Tables. Use the workbook. For tables over about 50,000 rows use UTF-8 CSV with the same headers.
+4. Write dates as YYYY-MM-DD. Write date and time as ISO 8601 with a UTC offset, typed as text.
+5. Use a decimal point.
+6. Do not enter human-linked metadata or session-level perception data. They stay in the controlled tier.
 
-To keep the results comparable, the workbook records how each response was made.
+### Compound responses
 
-- processing_software and processing_version on every run.
-- quant_ion on every response, the ion or transition that was integrated.
-- use_for_lod and in_range flags, set from the SOP.
-- The features sheet for untargeted features, with unassigned features kept.
+Each laboratory processes its own raw data and reports one response per run and compound.
 
-Because the raw and mzML files are deposited with checksums, the consortium can later reprocess every run with one common pipeline and compare it with the laboratory results. That central reprocessing is a later layer and is not needed for the sprint.
+1. Record processing_software and processing_version for every run.
+2. Record quant_ion for every response.
+3. Set use_for_lod and in_range from the laboratory SOP.
+4. List untargeted features in the features sheet. Keep unassigned features.
+5. Keep the raw and mzML files with their checksums. AROMA may reprocess them centrally.
 
-## 6. Check before sending
+### Checks
 
-    python scripts/check_submission.py "your file.xlsx" -lab YOURCODE
+AROMA runs the checker on every submission. It tests every column, the links between sheets, the agreement between file names and the run_manifest, that an amount can be derived for every response, and that each sample ID lies in an allocated block. The laboratory corrects every error and resubmits.
 
-The checker is distributed to partner laboratories by the consortium. It tests every column, the links between sheets, the agreement between file names and the run_manifest, whether an amount can be derived for every compound response, and whether each sample ID is inside an allocated block. Fix every error before sending. Nothing is changed by the checker.
+### Retained records
 
-## 7. What happens next
+Keep blanks, failed runs and runs excluded after QC. Mark them with run_status and a note. AROMA retains and counts them on the card.
 
-The AROMA build loads all submissions into one database, derives LOD, LOQ, linear range, matrix effect, CCS summary and provenance counts under DEFINITIONS.md, and regenerates every card. Keep blanks, failed runs and runs excluded after QC, marked with run_status and a note. They are retained and counted on the card.
+## Workbook sheets
 
-## 8. The workbook sheets
-
-One sheet per table. Required columns are marked with an asterisk. Sheets marked optional are filled in only when you have that kind of data. Allowed codes are listed in section 9 and in the workbook's Vocabularies sheet.
+One sheet per table. * marks a required column. Complete an optional sheet only when the data exist. Allowed codes are in the Vocabularies sheet and in the tables below.
 
 ### sample_manifest
 
@@ -164,7 +184,7 @@ One row per laboratory, platform, compound, adduct, buffer gas and method. The e
 
 Columns: lab*, platform*, aroma_id*, adduct*, buffer_gas*, method*, calibrant*, ccs_a2*, expanded_uncertainty_a2*, coverage_factor*, n_replicates*, confidence*
 
-## 9. Allowed codes
+## Allowed codes
 
 ### Laboratories
 
@@ -238,34 +258,6 @@ Columns: lab*, platform*, aroma_id*, adduct*, buffer_gas*, method*, calibrant*, 
 | log | txt |
 | other | zip |
 
-### Identifier blocks
+## Further information
 
-Each laboratory issues its own SPK, BLK, QCP and SMP numbers from its own block. UoM issues all STD numbers.
-
-| Sample type | Issuer | First | Last |
-|---|---|---|---|
-| STD | UOM | 1 | 9999999 |
-| SPK | UOM | 1 | 100000 |
-| SPK | EES | 100001 | 200000 |
-| SPK | LU | 200001 | 300000 |
-| SPK | UOR | 300001 | 400000 |
-| SPK | WYT | 400001 | 500000 |
-| BLK | UOM | 1 | 100000 |
-| BLK | EES | 100001 | 200000 |
-| BLK | LU | 200001 | 300000 |
-| BLK | UOR | 300001 | 400000 |
-| BLK | WYT | 400001 | 500000 |
-| QCP | UOM | 1 | 100000 |
-| QCP | EES | 100001 | 200000 |
-| QCP | LU | 200001 | 300000 |
-| QCP | UOR | 300001 | 400000 |
-| QCP | WYT | 400001 | 500000 |
-| SMP | UOM | 1 | 100000 |
-| SMP | EES | 100001 | 200000 |
-| SMP | LU | 200001 | 300000 |
-| SMP | UOR | 300001 | 400000 |
-| SMP | WYT | 400001 | 500000 |
-
-## 10. Where else to look
-
-DATA_DICTIONARY.md lists every column with its type and rules in full. The same rules are built into the workbook, which has drop-down lists and a worked example on its Read me sheet.
+[Data dictionary](DATA_DICTIONARY.md) lists every column with its type and rules.
