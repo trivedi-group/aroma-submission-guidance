@@ -13,9 +13,12 @@ Version 0.2. Applies to UoM, EES, LU, UoR and WYT.
 
 Complete steps 1 to 5 for every batch (Figure 1).
 
-![Figure 1](images/01-workflow.png)
+<figure>
+<img src="images/01-workflow.png" alt="Figure 1. Workflow for each batch.">
+<figcaption><b>Figure 1.</b> Workflow for each batch.</figcaption>
+</figure>
 
-Figure 1. Workflow for each batch.
+<br>
 
 ### Step 1. Fill in the workbook
 
@@ -26,50 +29,77 @@ Figure 1. Workflow for each batch.
 5. Enter one row in calibration_points for each compound in each run.
 6. Select codes from the drop-down lists. Cells with a list accept only allowed codes.
 
-![Figure 2](images/02-sheet-links.png)
+<figure>
+<img src="images/02-sheet-links.png" alt="Figure 2. Links between sheets. Each sheet points to the one before it by identifier.">
+<figcaption><b>Figure 2.</b> Links between sheets. Each sheet points to the one before it by identifier.</figcaption>
+</figure>
 
-Figure 2. Links between sheets. Each sheet points to the one before it by identifier.
+<br>
 
-![Figure 3](images/03-sample-manifest.png)
+<figure>
+<img src="images/03-sample-manifest.png" alt="Figure 3. sample_manifest. The sample_id identifies the tube. A spiked sample (SPK) names its source standard in parent_std_id.">
+<figcaption><b>Figure 3.</b> sample_manifest. The sample_id identifies the tube. A spiked sample (SPK) names its source standard in parent_std_id.</figcaption>
+</figure>
 
-Figure 3. sample_manifest. The sample_id identifies the tube. A spiked sample (SPK) names its source standard in parent_std_id.
+<br>
 
-![Figure 4](images/04-run-manifest.png)
+<figure>
+<img src="images/04-run-manifest.png" alt="Figure 4. run_manifest. The run_id equals the raw file name without its extension.">
+<figcaption><b>Figure 4.</b> run_manifest. The run_id equals the raw file name without its extension.</figcaption>
+</figure>
 
-Figure 4. run_manifest. The run_id equals the raw file name without its extension.
+<br>
 
-![Figure 5](images/05-responses.png)
+<figure>
+<img src="images/05-responses.png" alt="Figure 5. calibration_points. The response is the value from the laboratory's own software. use_for_lod marks the low points used for the detection limit. in_range marks the points inside the linear range.">
+<figcaption><b>Figure 5.</b> calibration_points. The response is the value from the laboratory's own software. use_for_lod marks the low points used for the detection limit. in_range marks the points inside the linear range.</figcaption>
+</figure>
 
-Figure 5. calibration_points. The response is the value from the laboratory's own software. use_for_lod marks the low points used for the detection limit. in_range marks the points inside the linear range.
+<br>
 
 ### Step 2. Name the raw files
 
 1. Name each file as shown in Figure 6.
 2. Zip each vendor folder into one file with the same name stem.
 
-![Figure 6](images/06-file-name.png)
+<figure>
+<img src="images/06-file-name.png" alt="Figure 6. Raw file name. Example: LU_TDGCMS_20270209_SMP0000123-A1_R01_0042.raw">
+<figcaption><b>Figure 6.</b> Raw file name. Example: LU_TDGCMS_20270209_SMP0000123-A1_R01_0042.raw</figcaption>
+</figure>
 
-Figure 6. Raw file name. Example: LU_TDGCMS_20270209_SMP0000123-A1_R01_0042.raw
+<br>
 
-Table 1. Sample ID prefixes.
+<table>
+<caption><b>Table 1.</b> Sample ID prefixes.</caption>
+<thead>
+<tr><th>Prefix</th><th>Sample type</th><th>Issued by</th><th>Example</th></tr>
+</thead>
+<tbody>
+<tr><td>STD</td><td>Standard</td><td>UoM</td><td>STD0000003</td></tr>
+<tr><td>SPK</td><td>Spiked sample</td><td>Laboratory, own block</td><td>SPK0200003</td></tr>
+<tr><td>BLK</td><td>Blank</td><td>Laboratory, own block</td><td>BLK0200001</td></tr>
+<tr><td>QCP</td><td>Pooled QC</td><td>Laboratory, own block</td><td>QCP0200001</td></tr>
+<tr><td>SMP</td><td>Real sample</td><td>Laboratory, own block</td><td>SMP0200001</td></tr>
+</tbody>
+</table>
 
-| Prefix | Sample type | Issued by | Example |
-|---|---|---|---|
-| STD | Standard | UoM | STD0000003 |
-| SPK | Spiked sample | Laboratory, own block | SPK0200003 |
-| BLK | Blank | Laboratory, own block | BLK0200001 |
-| QCP | Pooled QC | Laboratory, own block | QCP0200001 |
-| SMP | Real sample | Laboratory, own block | SMP0200001 |
+<br>
 
-Table 2. Blocks for SPK, BLK, QCP and SMP numbers.
+<table>
+<caption><b>Table 2.</b> Blocks for SPK, BLK, QCP and SMP numbers.</caption>
+<thead>
+<tr><th>Laboratory</th><th>First</th><th>Last</th></tr>
+</thead>
+<tbody>
+<tr><td>UoM</td><td>1</td><td>100000</td></tr>
+<tr><td>EES</td><td>100001</td><td>200000</td></tr>
+<tr><td>LU</td><td>200001</td><td>300000</td></tr>
+<tr><td>UoR</td><td>300001</td><td>400000</td></tr>
+<tr><td>WYT</td><td>400001</td><td>500000</td></tr>
+</tbody>
+</table>
 
-| Laboratory | First | Last |
-|---|---|---|
-| UoM | 1 | 100000 |
-| EES | 100001 | 200000 |
-| LU | 200001 | 300000 |
-| UoR | 300001 | 400000 |
-| WYT | 400001 | 500000 |
+<br>
 
 ### Step 3. Convert to mzML
 
@@ -90,9 +120,12 @@ Table 2. Blocks for SPK, BLK, QCP and SMP numbers.
 
 AROMA loads all submissions into one database, derives the detection limits and other values in the same way for every laboratory, and updates the OlfactoCards.
 
-![Figure 7](images/07-card.png)
+<figure>
+<img src="images/07-card.png" alt="Figure 7. OlfactoCard built from the synthetic demonstration data.">
+<figcaption><b>Figure 7.</b> OlfactoCard built from the synthetic demonstration data.</figcaption>
+</figure>
 
-Figure 7. OlfactoCard built from the synthetic demonstration data.
+<br>
 
 ## Rules
 
