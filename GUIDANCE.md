@@ -6,7 +6,7 @@ Version 0.2, a proposal for the five laboratories in the sprint (UoM, EES, LU, U
 
 For every batch, send three things.
 
-1. The filled workbook, Submission template v1.xlsx, in the templates folder. It is the only template. Every laboratory fills in the same sheets.
+1. The filled workbook, Submission template v1.xlsx, in this repository. It is the only template. Every laboratory fills in the same sheets.
 2. The raw files, named as in section 3, with a SHA-256 checksum for each listed in the workbook.
 3. The same data converted to the open format in section 4.
 
@@ -60,7 +60,7 @@ Because the raw and mzML files are deposited with checksums, the consortium can 
 
     python scripts/check_submission.py "your file.xlsx" -lab YOURCODE
 
-The checker is in the consortium repository. It tests every column, the links between sheets, the agreement between file names and the run_manifest, whether an amount can be derived for every compound response, and whether each sample ID is inside an allocated block. Fix every error before sending. Nothing is changed by the checker.
+The checker is distributed to partner laboratories by the consortium. It tests every column, the links between sheets, the agreement between file names and the run_manifest, whether an amount can be derived for every compound response, and whether each sample ID is inside an allocated block. Fix every error before sending. Nothing is changed by the checker.
 
 ## 7. What happens next
 
